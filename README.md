@@ -118,4 +118,4 @@ news/
 
 ## 许可证
 
-(如果需要，请在此处添加许可证信息，例如 MIT License)
+Apache-2.0 license
