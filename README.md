@@ -20,7 +20,7 @@
 *   腾讯 (`tencent_spider`)
 *   澎湃新闻 (`thepaper_spider`)
 *   微博热搜 (`weibo_spider`)
-*   知乎 (`zhihu_spider`)
+
 
 ## 技术栈
 
