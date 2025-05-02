@@ -20,7 +20,7 @@
 *   腾讯 (`tencent_spider`)
 *   澎湃新闻 (`thepaper_spider`)
 *   微博热搜 (`weibo_spider`)
-*   知乎 (`zhihu_spider`)
+
 
 ## 技术栈
 
@@ -35,238 +35,49 @@
 *   Python 3.x
 *   pip (Python 包管理器)
 *   MySQL 数据库服务
+*   Docker (如果选择使用 Docker 部署)
 
-## 安装与设置
+## 安装与设置 (非 Docker)
 
 1.  **克隆仓库**:
-    ```
-
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```bash
-    git clone <your-repository-url>
+    ```bash
+    git clone <your-repository-url> # 请替换为实际的仓库 URL
     cd news
     ```
 
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```
-
-2.  **安装依赖**: 
-    使用 `requirements.txt` 文件安装所有必要的依赖：
-    ```
-
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```bash
+2.  **安装依赖**:
+    建议在虚拟环境中安装依赖：
+    ```bash
+    python -m venv venv
+    source venv/bin/activate # Linux/macOS
+    # venv\Scripts\activate # Windows
     pip install -r requirements.txt
     ```
 
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```
-
 3.  **数据库配置**:
     *   确保你的 MySQL 服务正在运行。
-    *   在 MySQL 中创建一个数据库 (例如 `news_db`)。
+    *   在 MySQL 中创建一个数据库 (例如 `news_db`) 并确保使用 `utf8mb4` 字符集。
     *   **重要**: 请在以下两个文件中修改数据库连接信息，确保它们一致：
         *   `app.py` (Flask 应用)
         *   `news/settings.py` (Scrapy 爬虫)
     *   需要修改的变量包括：
-        ```
-
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```python
-        MYSQL_HOST = 'your_mysql_host'       # 数据库主机
+        ```python
+        MYSQL_HOST = 'your_mysql_host'       # 数据库主机 (e.g., '127.0.0.1')
         MYSQL_USER = 'your_mysql_user'       # 数据库用户名
         MYSQL_PASSWORD = 'your_mysql_password' # 数据库密码
-        MYSQL_DB = 'your_database_name'      # 数据库名称
+        MYSQL_DB = 'your_database_name'      # 数据库名称 (e.g., 'news_db')
         MYSQL_PORT = 3306                  # 数据库端口 (通常是 3306)
         ```
+    *   *注意：直接在代码中硬编码凭据不安全。在生产环境中，强烈建议使用环境变量或配置文件管理敏感信息。*
 
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```
-    *   *注意：当前配置直接硬编码在代码中。在生产环境中，建议使用环境变量或配置文件管理敏感信息。*
-
-## 如何运行
+## 如何运行 (非 Docker)
 
 1.  **运行爬虫**:
     在项目根目录 (包含 `scrapy.cfg` 文件的目录) 下执行以下命令来运行指定的爬虫：
-    ```
+    ```bash
+    # 确保虚拟环境已激活
+    # source venv/bin/activate 或 venv\Scripts\activate
 
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```bash
     # 运行单个爬虫，例如微博爬虫
     scrapy crawl weibo_spider
 
@@ -274,133 +85,84 @@ Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配�
     scrapy crawl baidu_spider
 
     # ...运行其他爬虫...
-
-    # (可选) 如果 `run.py` 脚本用于批量运行爬虫，可以尝试：
-    # python run.py 
     ```
-
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```
-    *注意: `run.py` 的具体功能取决于其实现。请查看该文件以了解其用途。*
-    *或者，你可以通过 Flask 应用界面提供的按钮来触发所有爬虫的后台运行。*
+    *(可选) 如果 `run.py` 脚本用于批量运行爬虫，可以尝试：*
+    ```bash
+    python run.py
+    ```
+    *请检查 `run.py` 的具体实现以了解其功能。*
+    *或者，可以通过 Flask 应用界面提供的按钮来触发所有爬虫的后台运行（如果该功能已实现）。*
 
 2.  **运行 Web 应用**:
     在项目根目录 (包含 `app.py` 文件的目录) 下执行：
-    ```
-
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```bash
+    ```bash
+    # 确保虚拟环境已激活
     python app.py
     ```
+    应用默认会在 `http://127.0.0.1:5000` 启动 (或者根据你的网络配置可能是 `http://0.0.0.0:5000`)。在浏览器中打开此地址即可访问新闻展示界面。
 
 ## 使用 Docker 运行
 
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
+Docker 提供了一种容器化的部署方式，可以简化环境配置。
 
-### 构建 Docker 镜像
+### 方式一: 从源代码构建
 
-在项目根目录下执行以下命令构建 Docker 镜像：
+如果你希望自行构建镜像，可以使用项目提供的 `Dockerfile`。
 
-```bash
-docker build -t news-app .
-```
+1.  **配置**: 确保 `app.py` 和 `news/settings.py` 中的数据库连接信息指向你的 MySQL 服务器地址（注意：如果 MySQL 也运行在 Docker 中，可能需要使用 Docker 网络地址，而不是 `localhost` 或 `127.0.0.1`）。或者，修改 Dockerfile 和代码以从环境变量读取数据库配置。
 
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
+2.  **构建 Docker 镜像**:
+    在项目根目录下执行：
+    ```bash
+    docker build -t news-app:latest .
+    ```
+    `.dockerignore` 文件会确保构建镜像时忽略不必要的文件。
 
-### 运行 Docker 容器
+3.  **运行 Docker 容器**:
+    ```bash
+    docker run --name news-web -d -p 8081:8081 news-app:latest
+    # --name news-web: 给容器命名为 news-web
+    # -d: 在后台运行
+    # -p 8081:8081: 将宿主机的 8081 端口映射到容器的 8081 端口
+    ```
+    *如果需要传递数据库环境变量（假设代码已修改为支持），可以添加 `-e` 参数:*
+    ```bash
+    # docker run --name news-web -d -p 8081:8081 \
+    #  -e MYSQL_HOST='your_db_host_accessible_from_docker' \
+    #  -e MYSQL_USER='your_user' \
+    #  -e MYSQL_PASSWORD='your_password' \
+    #  -e MYSQL_DB='your_db' \
+    #  news-app:latest
+    ```
+    容器启动后，可以通过 `http://localhost:8081` (或服务器 IP:8081) 访问 Web 应用。Dockerfile 使用 `gunicorn` 运行 Flask 应用。
 
-使用以下命令运行 Docker 容器：
+### 方式二: 使用预构建镜像 (一键部署)
 
-```bash
-docker run -p 8081:8081 news-app
-```
+如果你想快速启动应用而无需手动构建，可以使用预构建的 Docker 镜像。
 
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
+1.  **拉取 Docker 镜像**:
+    ```bash
+    docker pull lihvarya/news:v1.0
+    ```
 
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```
-    应用默认会在 `http://127.0.0.1:5000` 启动 (或者根据你的网络配置可能是 `http://0.0.0.0:5000`)。在浏览器中打开此地址即可访问新闻展示界面。
+2.  **运行 Docker 容器**:
+    ```bash
+    docker run --name news-web -d -p 8081:8081 lihvarya/news:v1.0
+    ```
+    *同样，需要确保容器可以访问你的 MySQL 数据库。如果预构建镜像 `lihvarya/news:v1.0` 支持环境变量配置，可以使用 `-e` 参数传入数据库连接信息，否则需要确保镜像内置的配置或默认配置与你的环境匹配。*
+    ```bash
+    # docker run --name news-web -d -p 8081:8081 \
+    #  -e MYSQL_HOST='your_db_host_accessible_from_docker' \
+    #  -e MYSQL_USER='your_user' \
+    #  -e MYSQL_PASSWORD='your_password' \
+    #  -e MYSQL_DB='your_db' \
+    #  lihvarya/news:v1.0
+    ```
+    启动后通过 `http://localhost:8081` 访问。
 
 ## 项目结构
 
-```
 
-## 使用 Docker 运行
-
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
-
-### 构建 Docker 镜像
-
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
 
 ```
 news/
@@ -424,33 +186,9 @@ news/
 └── README.md          # 本文档
 ```
 
-## 使用 Docker 运行
 
-本项目提供了 Dockerfile，方便使用 Docker 进行构建和运行。
 
-### 构建 Docker 镜像
 
-在项目根目录下执行以下命令构建 Docker 镜像：
-
-```bash
-docker build -t news-app .
-```
-
-`.dockerignore` 文件会确保构建镜像时忽略不必要的文件（如 `.git` 目录、虚拟环境、缓存文件等），从而减小镜像体积并提高构建速度。
-
-### 运行 Docker 容器
-
-使用以下命令运行 Docker 容器：
-
-```bash
-docker run -p 8081:8081 news-app
-```
-
-这将在后台启动容器，并将容器内的 8081 端口映射到宿主机的 8081 端口。你可以通过访问 `http://localhost:8081` 来查看 Web 应用。
-
-Dockerfile 使用 `gunicorn` 作为 WSGI 服务器来运行 Flask 应用，配置了 4 个 worker 进程，并监听 `0.0.0.0:8081`。
-
-```
 
 ## 贡献
 
