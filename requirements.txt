@@ -2,8 +2,6 @@ beautifulsoup4==4.13.4
 DBUtils==3.1.0
 Flask==3.1.0
 itemadapter==0.11.0
-itemadapter==0.3.0
 PyMySQL==1.1.1
 Scrapy==2.12.0
-Scrapy==2.11.1
 Twisted==24.11.0

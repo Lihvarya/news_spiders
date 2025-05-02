@@ -1,0 +1,32 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# IDE configuration
+.idea/
+*.iml
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs (if any)
+*.log
+
+# Other build artifacts or local files
+*.egg-info/
+dist/
+build/
+*.spec
