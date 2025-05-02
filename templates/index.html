@@ -96,6 +96,34 @@
              transform: scale(0.98); /* 按下时的微小动画 */
          }
 
+        /* "运行所有爬虫" 按钮样式 */
+        .run-all-button {
+            padding: 12px 25px;
+            background-color: #e67e22; /* 橙色按钮 */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            outline: none;
+            margin-left: 10px; /* 与搜索按钮的间距 */
+            vertical-align: top; /* 与搜索框和按钮对齐 */
+        }
+
+        .run-all-button:hover {
+            background-color: #d35400;
+        }
+
+        .run-all-button:active {
+            transform: scale(0.98);
+        }
+
+        .run-all-button:disabled {
+            background-color: #bdc3c7; /* 禁用时的灰色 */
+            cursor: not-allowed;
+        }
+
 
         /* 新闻来源导航样式 */
         .source-nav {
@@ -366,6 +394,33 @@
                     showNewsBySource(selectedSource);
                 });
             });
+
+            // Add event listener for the 'Run All Spiders' button
+            const runAllButton = document.getElementById('run-all-spiders-btn');
+            if (runAllButton) {
+                runAllButton.addEventListener('click', function() {
+                    // Disable button and show loading state (optional)
+                    this.disabled = true;
+                    this.textContent = '正在运行...';
+
+                    // Send request to the backend
+                    fetch('/run-all-spiders', { method: 'POST' })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message || '请求已发送'); // Show feedback
+                            // Re-enable button
+                            this.disabled = false;
+                            this.textContent = '运行所有爬虫';
+                        })
+                        .catch(error => {
+                            console.error('Error running spiders:', error);
+                            alert('启动爬虫时出错，请查看控制台日志。');
+                            // Re-enable button even on error
+                            this.disabled = false;
+                            this.textContent = '运行所有爬虫';
+                        });
+                });
+            }
         });
 
         // Function to show/hide news groups based on source
@@ -393,6 +448,7 @@
             <label for="search-input" class="visually-hidden">搜索新闻标题或摘要</label> {# Added label #}
             <input type="text" id="search-input" name="q" placeholder="搜索新闻标题或摘要..." value="{{ query | default('') }}"> {# Added id #}
             <button type="submit">搜索</button>
+            <button type="button" id="run-all-spiders-btn" class="run-all-button">运行所有爬虫</button> {# New Button #}
         </form>
 
         <div class="source-nav">

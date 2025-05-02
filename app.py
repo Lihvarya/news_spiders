@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for # Import redirect and url_for
+import subprocess
+import threading
+import os
 import pymysql
 from dbutils.pooled_db import PooledDB
 import logging
@@ -126,7 +129,71 @@ def search():
 #     # and render a dedicated template or list them on a single page
 #     return f"Showing all news for source: {source_name}"
 
+# Function to run spiders in a separate thread
+def run_spiders_background():
+    # List of spider names based on index.html buttons (adjust if needed)
+    spider_names = [
+        'weibo_spider', 'baidu_spider', 'sina_spider', 'tencent_spider',
+        'netease_spider', 'thepaper_spider', 'cctv_spider', 'fenghuang_spider'
+        # Add other spider names if they exist (e.g., 'ithome_spider', 'toutiao_spider', etc.)
+    ]
+    # Determine the Scrapy project directory (assuming app.py is in the root with scrapy.cfg)
+    scrapy_project_dir = os.path.dirname(os.path.abspath(__file__))
 
+    # Verify scrapy.cfg exists in the determined directory
+    scrapy_cfg_path = os.path.join(scrapy_project_dir, 'scrapy.cfg')
+    if not os.path.exists(scrapy_cfg_path):
+        logging.error(f"Scrapy configuration file 'scrapy.cfg' not found in '{scrapy_project_dir}'. Cannot run spiders.")
+        return
+
+    logging.info(f"Starting spider execution in background from directory: {scrapy_project_dir}")
+    for spider_name in spider_names:
+        command = ['scrapy', 'crawl', spider_name]
+        try:
+            # Run each crawl command sequentially within the background thread
+            logging.info(f"Running command: {' '.join(command)} in {scrapy_project_dir}")
+            # Use subprocess.run and wait for completion. Capture output.
+            # Set check=False to manually check return code and log errors.
+            process = subprocess.run(command, cwd=scrapy_project_dir, capture_output=True, text=True, check=False, encoding='utf-8') # Specify encoding
+
+            if process.returncode == 0:
+                logging.info(f"Successfully ran spider: {spider_name}")
+                # Log stdout only if needed and not too verbose
+                # logging.debug(f"Output for {spider_name}:\n{process.stdout}")
+            else:
+                logging.error(f"Error running spider {spider_name}. Return code: {process.returncode}")
+                logging.error(f"Stderr for {spider_name}:\n{process.stderr}")
+                logging.error(f"Stdout for {spider_name}:\n{process.stdout}")
+
+        except FileNotFoundError:
+            logging.error(f"Error: 'scrapy' command not found. Make sure Scrapy is installed, activated in the environment, and accessible in the system's PATH.")
+            # Stop trying if scrapy command is not found
+            break
+        except Exception as e:
+            logging.error(f"An unexpected error occurred while running spider {spider_name}: {e}")
+            # Optionally log stdout/stderr on unexpected errors too
+            # if 'process' in locals():
+            #     logging.error(f"Stderr: {getattr(process, 'stderr', 'N/A')}")
+            #     logging.error(f"Stdout: {getattr(process, 'stdout', 'N/A')}")
+
+    logging.info("Finished background spider execution process.")
+
+@app.route('/run-all-spiders', methods=['POST'])
+def run_all_spiders():
+    """Endpoint to trigger running all spiders in a background thread."""
+    logging.info("Received request to run all spiders.")
+    try:
+        # Start the spider execution in a background thread
+        thread = threading.Thread(target=run_spiders_background, daemon=True) # Use daemon thread
+        thread.start()
+        logging.info("Background thread started for spider execution.")
+        return jsonify({'message': '所有爬虫已开始后台运行。请稍后刷新页面查看最新数据。'}), 202 # 202 Accepted
+    except Exception as e:
+        logging.error(f"Failed to start background thread for spiders: {e}")
+        return jsonify({'message': '启动爬虫后台任务失败。'}), 500
+
+
+# --- 运行 Flask 应用 ---
 # --- 运行 Flask 应用 ---
 if __name__ == '__main__':
     # 注意：在生产环境中，不应使用 Flask 自带的开发服务器
