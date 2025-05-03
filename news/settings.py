@@ -93,8 +93,8 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 # MySQL Database settings
-MYSQL_HOST = '39.101.64.24' # 数据库主机
-MYSQL_USER = 'news_db'      # 数据库用户名 (请根据实际情况修改)
-MYSQL_PASSWORD = 'DFMWkcsY22pMXRKB' # 数据库密码 (请根据实际情况修改)
-MYSQL_DB = 'news_db'     # 数据库名称 (请根据实际情况修改)
+MYSQL_HOST = '' # 数据库主机
+MYSQL_USER = ''      # 数据库用户名 (请根据实际情况修改)
+MYSQL_PASSWORD = '' # 数据库密码 (请根据实际情况修改)
+MYSQL_DB = ''     # 数据库名称 (请根据实际情况修改)
 MYSQL_PORT = 3306        # 数据库端口 (默认3306)
