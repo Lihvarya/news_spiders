@@ -13,10 +13,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # --- 数据库配置 (从 Scrapy settings 读取或直接配置) ---
 # 理想情况下，这些配置应该与 Scrapy settings.py 保持一致或从同一配置文件读取
 # 为了简化示例，这里直接硬编码，实际项目中建议使用更健壮的配置管理方式
-MYSQL_HOST = '39.101.64.24' # 数据库主机
-MYSQL_USER = 'news_db'      # 数据库用户名 (请根据实际情况修改)
-MYSQL_PASSWORD = 'DFMWkcsY22pMXRKB' # 数据库密码 (请根据实际情况修改)
-MYSQL_DB = 'news_db'     # 数据库名称 (请根据实际情况修改)
+MYSQL_HOST = '' # 数据库主机
+MYSQL_USER = ''      # 数据库用户名 (请根据实际情况修改)
+MYSQL_PASSWORD = '' # 数据库密码 (请根据实际情况修改)
+MYSQL_DB = ''     # 数据库名称 (请根据实际情况修改)
 MYSQL_PORT = 3306
 
 # 创建数据库连接池
