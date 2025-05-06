@@ -541,6 +541,8 @@
                                      {% set latest_news = source_news[0] %}
                                      {% if latest_news.publish_time %}
                                           最早(最新): {{ latest_news.publish_time }}
+                                     {% elif last_run_times and source in last_run_times %}
+                                          爬虫运行于: {{ last_run_times[source] }}
                                      {% else %}
                                           时间未知
                                      {% endif %}

@@ -4,6 +4,7 @@ import threading
 import os
 import pymysql
 from dbutils.pooled_db import PooledDB
+import datetime # Import datetime for placeholder timestamps
 import logging
 
 # 配置日志
@@ -45,6 +46,23 @@ except Exception as e:
 
 app = Flask(__name__)
 
+# Placeholder function to simulate fetching last run times
+def get_last_run_times():
+    # In a real application, this would query a database or check log files
+    # For now, return dummy data with current time for demonstration
+    now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return {
+        'weibo': now_str,
+        'baidu': now_str,
+        'sina': now_str,
+        'tencent': now_str,
+        'netease': now_str,
+        'thepaper': now_str,
+        'cctv': now_str,
+        'fenghuang': now_str,
+        # Add other sources if needed
+    }
+
 # --- 路由定义 ---
 
 @app.route('/')
@@ -71,9 +89,10 @@ def index():
         news_list = cursor.fetchall()
         logging.info(f"Fetched {len(news_list)} latest news articles for index page.")
 
-        # Pass the full list of fetched news to the template.
+        # Pass the full list of fetched news and last run times to the template.
         # The template will group them by source, and JS will handle which groups are initially visible.
-        return render_template('index.html', news_list=news_list)
+        last_run_times = get_last_run_times() # Get placeholder run times
+        return render_template('index.html', news_list=news_list, last_run_times=last_run_times)
 
     except Exception as e:
         logging.error(f"Error fetching news from database for index page: {e}")
@@ -110,8 +129,9 @@ def search():
         cursor.execute(sql, (search_term, search_term))
         results = cursor.fetchall()
         logging.info(f"Found {len(results)} results for search query: '{query}'")
-        # Pass results and query to the template. The template will group results by source.
-        return render_template('index.html', results=results, query=query)
+        # Pass results, query, and last run times to the template. The template will group results by source.
+        last_run_times = get_last_run_times() # Get placeholder run times
+        return render_template('index.html', results=results, query=query, last_run_times=last_run_times)
     except Exception as e:
         logging.error(f"Error searching news in database: {e}")
         return f"Error searching news: {e}", 500
