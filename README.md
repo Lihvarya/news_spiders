@@ -2,6 +2,11 @@
 
 这是一个使用 Scrapy 框架构建的新闻爬虫项目，并将抓取到的数据通过 Flask Web 应用进行展示。
 
+## 界面
+![image](https://github.com/user-attachments/assets/2ecd561e-6255-463e-a0cd-af117bdf1840)
+
+
+
 ## 功能
 
 *   **多源新闻爬取**: 包含多个爬虫，用于从不同新闻网站抓取信息。
